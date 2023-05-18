@@ -1,7 +1,7 @@
-import "../css/contact.css";
+import "../css/login.css";
 import { Box, Center, InputGroup, Input } from "@chakra-ui/react";
 
-export default function Contact() {
+export default function Login() {
 	return (
 		<Center
 			h={"100vh"}
@@ -9,7 +9,13 @@ export default function Contact() {
 			justifyContent={"center"}
 			alignItems={"center"}
 		>
-			<Box id="boxContact" w={"390px"} h={"844px"}>
+			<Box
+				id="boxContact"
+				w={"390px"}
+				h={"844px"}
+				justifyContent={"center"}
+				alignItems={"center"}
+			>
 				<Center>Login</Center>
 				<Box>
 					<InputGroup
@@ -23,18 +29,22 @@ export default function Contact() {
 						<Input
 							placeholder="Email/Username"
 							w={"80%"}
+							h={"48px"}
 							border={"1px solid #A5A5A5"}
 						></Input>
 						<Input
 							placeholder="Password"
 							w={"80%"}
+							h={"48px"}
 							border={"1px solid #A5A5A5"}
+							id="password"
+							type={"password"}
 						></Input>
 					</InputGroup>
 				</Box>
-				<Center>
+				<Center paddingLeft={"30px"} paddingRight={"30px"}>
 					<Center
-						w={"140px"}
+						w={"60%"}
 						h={"48px"}
 						borderRadius={"25px"}
 						color={"black"}
