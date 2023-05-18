@@ -9,13 +9,7 @@ export default function Login() {
 			justifyContent={"center"}
 			alignItems={"center"}
 		>
-			<Box
-				id="boxContact"
-				w={"390px"}
-				h={"844px"}
-				justifyContent={"center"}
-				alignItems={"center"}
-			>
+			<Box id="boxLogin" w={"390px"} h={"844px"}>
 				<Center>Login</Center>
 				<Box>
 					<InputGroup
