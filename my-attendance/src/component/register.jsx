@@ -1,8 +1,7 @@
 import "../css/login.css";
 import { Box, Center, InputGroup, Input } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
 	return (
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"}>
@@ -13,7 +12,7 @@ export default function Login() {
 					alignItems={"center"}
 				>
 					<Center paddingTop={"40px"} paddingBottom={"20px"}>
-						Sign into your Account
+						Create Account
 					</Center>
 					<Box>
 						<InputGroup
@@ -27,7 +26,7 @@ export default function Login() {
 							alignItems={"center"}
 						>
 							<Input
-								placeholder="Email"
+								placeholder="Email/Username"
 								w={"300px"}
 								h={"48px"}
 								border={"1px solid #A5A5A5"}
@@ -54,11 +53,7 @@ export default function Login() {
 
 					<Center paddingTop={"20px"}>Don't have an account?</Center>
 
-					<Link to={"/register"}>
-						<Center color={"blue.600"} textDecor={"underline"}>
-							SIGN UP
-						</Center>
-					</Link>
+					<Center color={"blue.600"}>SIGN UP</Center>
 				</Center>
 			</Box>
 		</Center>

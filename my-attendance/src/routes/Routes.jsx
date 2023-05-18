@@ -1,6 +1,12 @@
 import { Route } from "react-router-dom";
-import Loginpage from "../pages/LoginPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import ContentPage from "../pages/ContentPage";
 
-const routes = [<Route path="/" element={<Loginpage />}></Route>];
+const routes = [
+	<Route path="/" element={<ContentPage />}></Route>,
+	<Route path="/login" element={<LoginPage />}></Route>,
+	<Route path="/register" element={<RegisterPage />}></Route>,
+];
 
 export default routes;
