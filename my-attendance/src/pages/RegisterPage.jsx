@@ -4,9 +4,12 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 export default function Register() {
 	const nav = useNavigate();
+
+	// const [company, setCompany] = useState[(1, 2, 3, 4)];
 
 	const formik = useFormik({
 		initialValues: {
@@ -14,8 +17,7 @@ export default function Register() {
 			email: "",
 			address: "",
 			password: "",
-			ConfirmPassword: "",
-			select: "Male",
+			company_id: "",
 		},
 		validationSchema: Yup.object().shape({
 			name: Yup.string().required("Enter a name for your profile."),
@@ -30,15 +32,14 @@ export default function Register() {
 			ConfirmPassword: Yup.string()
 				.required("Re-enter your password")
 				.oneOf([Yup.ref("password"), "Passwords do NOT match"]),
-			select: Yup.string().required("Select your company"),
+			company_id: Yup.string().required("Select your company"),
 		}),
 		onSubmit: async () => {
-			// console.log(formik.values);
-			const { name, email, address, password, ConfirmPassword } =
+			const { name, email, address, password, company_id } =
 				formik.values;
-			const account = { name, email, address, password, ConfirmPassword };
+			const account = { name, email, address, password, company_id };
 			const checkEmail = await axios
-				.get("http://localhost:2000/user", {
+				.get("http://localhost:2000/v2", {
 					params: { email: account.email },
 				})
 				.then((res) => {
@@ -52,7 +53,7 @@ export default function Register() {
 				return alert("email already used");
 			} else {
 				await axios
-					.post("http://localhost:2000/user", account)
+					.post("http://localhost:2000/v1", account)
 					.then((res) => {
 						nav("/login");
 					});
@@ -64,6 +65,8 @@ export default function Register() {
 		const { value, id } = event.target;
 		formik.setFieldValue(id, value);
 	}
+
+	console.log(formik);
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
@@ -172,7 +175,7 @@ export default function Register() {
 								h={"48px"}
 								border={"1px solid #A5A5A5"}
 								placeholder="Select Company"
-								id="select"
+								id="company_id"
 							>
 								<option value="option1">Meta</option>
 								<option value="option2">EDB</option>
@@ -181,9 +184,11 @@ export default function Register() {
 							</Select>
 							<Box
 								color={"red"}
-								display={formik.errors.select ? "box" : "none"}
+								display={
+									formik.errors.company_id ? "box" : "none"
+								}
 							>
-								{formik.errors.select}
+								{formik.errors.company_id}
 							</Box>
 						</InputGroup>
 					</Box>
@@ -193,6 +198,8 @@ export default function Register() {
 						h={"48px"}
 						borderRadius={"25px"}
 						border={"1px solid #A5A5A5"}
+						onClick={inputHandler}
+						cursor={"pointer"}
 					>
 						Register Now
 					</Center>

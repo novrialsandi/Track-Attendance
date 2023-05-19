@@ -16,14 +16,19 @@ export default function Content() {
 	return (
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"}>
-				<Box h={"422px"} bg={"rgb(191,41,53)"}>
+				<Box h={"422px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
 					<Center paddingTop={"40px"} paddingBottom={"20px"}>
 						Live Attendance
 					</Center>
 					<Center>09:23</Center>
 					<Center>Wed, 17 May 2023</Center>
 					<Center>
-						<Box id="boxCheck" w={"350px"} padding={"15px"}>
+						<Box
+							id="boxCheck"
+							w={"350px"}
+							padding={"15px"}
+							borderRadius={"15px"}
+						>
 							<Flex
 								justifyContent={"center"}
 								flexDir={"column"}
@@ -61,10 +66,38 @@ export default function Content() {
 										Clock Out
 									</Flex>
 								</Flex>
-								<input type="range" value="0" class="pullee" />
 							</Flex>
 						</Box>
 					</Center>
+				</Box>
+				<Box>
+					<Flex
+						justifyContent={"space-between"}
+						w={"100%"}
+						padding={"15px"}
+					>
+						<Flex>Attendance Log</Flex>
+						<Flex>View Log</Flex>
+					</Flex>
+					<Flex
+						justifyContent={"space-between"}
+						w={"100%"}
+						paddingLeft={"15px"}
+						paddingRight={"15px"}
+						alignItems={"center"}
+					>
+						<Flex flexDir={"column"} w={"70px"}>
+							<Flex>07:30</Flex>
+							<Flex>17 May</Flex>
+						</Flex>
+						<Flex w={"70px"} justifyContent={"center"}>
+							{" "}
+							Clock In
+						</Flex>
+						<Flex w={"70px"} justifyContent={"end"}>
+							""
+						</Flex>
+					</Flex>
 				</Box>
 			</Box>
 		</Center>
