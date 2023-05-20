@@ -8,7 +8,12 @@ import axios from "axios";
 export default function Register() {
 	const nav = useNavigate();
 
-	// const [company, setCompany] = useState[(1, 2, 3, 4)];
+	const company = [
+		{ company_id: "Meta" },
+		{ company_id: "EDB" },
+		{ company_id: "Glints" },
+		{ company_id: "Purwadhika" },
+	];
 
 	const formik = useFormik({
 		initialValues: {
@@ -176,10 +181,11 @@ export default function Register() {
 								placeholder="Select Company"
 								id="company_id"
 							>
-								<option value="option1">Meta</option>
-								<option value="option2">EDB</option>
-								<option value="option3">Glints</option>
-								<option value="option4">Purwadhika</option>
+								{company.map((val) => (
+									<option value={val.company_id}>
+										{val.company_id}
+									</option>
+								))}
 							</Select>
 							<Box
 								color={"red"}
