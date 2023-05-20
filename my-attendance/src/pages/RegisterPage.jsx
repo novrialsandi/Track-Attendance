@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
 
 export default function Register() {
 	const nav = useNavigate();

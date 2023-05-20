@@ -11,8 +11,12 @@ import {
 	SliderThumb,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { Axios } from "axios";
+import { useState } from "react";
 
 export default function Content() {
+	const [currentTime, setCurrentTime] = useState(moment());
+
 	return (
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"}>
@@ -52,6 +56,9 @@ export default function Content() {
 										alignItems={"center"}
 										bg={"#035ebf"}
 										borderRadius={"10px"}
+										onClick={() =>
+											setClockIn(e.target.value)
+										}
 									>
 										Clock In
 									</Flex>
@@ -62,6 +69,7 @@ export default function Content() {
 										alignItems={"center"}
 										bg={"#035ebf"}
 										borderRadius={"10px"}
+										onClick={()}
 									>
 										Clock Out
 									</Flex>
