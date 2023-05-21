@@ -4,16 +4,21 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 export default function Register() {
 	const nav = useNavigate();
 
-	const company = [
-		{ company_id: "Meta" },
-		{ company_id: "EDB" },
-		{ company_id: "Glints" },
-		{ company_id: "Purwadhika" },
-	];
+	const [companyList, setCompanyList] = useState([]);
+
+	const companyId = async () => {
+		await axios
+			.get("http://localhost:2000/Companies", companyList)
+			.then((res) => {
+				setCompanyList(res.data);
+				console.log(res.data);
+			});
+	};
 
 	const formik = useFormik({
 		initialValues: {
@@ -43,7 +48,7 @@ export default function Register() {
 				formik.values;
 			const account = { name, email, address, password, company_id };
 			const checkEmail = await axios
-				.get("http://localhost:2000/v2", {
+				.get("http://localhost:2000/v1", {
 					params: { email: account.email },
 				})
 				.then((res) => {
@@ -57,7 +62,7 @@ export default function Register() {
 				return alert("email already used");
 			} else {
 				await axios
-					.post("http://localhost:2000/v1", account)
+					.post("http://localhost:2000/Users", account)
 					.then((res) => {
 						nav("/login");
 					});
@@ -69,8 +74,6 @@ export default function Register() {
 		const { value, id } = event.target;
 		formik.setFieldValue(id, value);
 	}
-
-	console.log(formik);
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
@@ -180,11 +183,10 @@ export default function Register() {
 								border={"1px solid #A5A5A5"}
 								placeholder="Select Company"
 								id="company_id"
+								onClick={companyId}
 							>
-								{company.map((val) => (
-									<option value={val.company_id}>
-										{val.company_id}
-									</option>
+								{companyList.map((val) => (
+									<option value={val.id}>{val.name}</option>
 								))}
 							</Select>
 							<Box
