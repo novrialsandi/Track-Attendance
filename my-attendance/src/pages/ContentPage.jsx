@@ -3,6 +3,7 @@ import { Box, Center, Flex, Icon } from "@chakra-ui/react";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 export default function Content() {
 	const [clock, setClock] = useState([]);
@@ -154,7 +155,9 @@ export default function Content() {
 						// borderBottom={"1px"}
 					>
 						<Flex fontSize={"22px"}>Attendance Log</Flex>
-						<Flex color={"#9a9a9a"}>View Log</Flex>
+						<Link to={"/log"}>
+							<Flex color={"#9a9a9a"}>View Log</Flex>
+						</Link>
 					</Flex>
 					{clock.map((val) => (
 						<Log {...val} />
