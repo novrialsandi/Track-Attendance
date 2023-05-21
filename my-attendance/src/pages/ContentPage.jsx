@@ -5,13 +5,13 @@ import React, { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 export default function Content() {
-	const [clockIn, setClockIn] = useState([]);
+	const [clock, setClock] = useState([]);
 	const [toClock, setToClock] = useState({ date: "", clock: "", icon: "" });
 
 	function addClock() {
-		const tempArr = [...clockIn];
+		const tempArr = [...clock];
 		tempArr.push(toClock);
-		setClockIn(tempArr);
+		setClock(tempArr);
 
 		setToClock({ date: "", clock: "", icon: "" });
 	}
@@ -151,11 +151,12 @@ export default function Content() {
 						justifyContent={"space-between"}
 						w={"100%"}
 						padding={"15px"}
+						// borderBottom={"1px"}
 					>
 						<Flex fontSize={"22px"}>Attendance Log</Flex>
 						<Flex color={"#9a9a9a"}>View Log</Flex>
 					</Flex>
-					{clockIn.map((val) => (
+					{clock.map((val) => (
 						<Log {...val} />
 					))}
 				</Box>
