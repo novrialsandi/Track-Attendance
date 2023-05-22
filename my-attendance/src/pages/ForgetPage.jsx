@@ -2,41 +2,44 @@ import "../css/login.css";
 import { Box, Center, InputGroup, Input, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Login() {
+export default function ForgetPass() {
 	const [account, setAccount] = useState({
+		id: "",
 		emna: "",
 		password: "",
 	});
-	async function forgetPass() {
-		const checkEmail = await axios
-			.get("http://localhost:2000/Users/forgetPass", {
-				params: { emna: account.emna },
+	async function fetchAcc() {
+		await axios
+			.get("http://localhost:2000/Users/token2", {
+				params: { token: JSON.parse(localStorage.getItem("token")) },
 			})
 			.then((res) => {
 				console.log(res.data);
-				localStorage.setItem("token", JSON.stringify(res.data.token));
+				setAccount(res.data);
 			});
 	}
+	useEffect(() => {
+		fetchAcc();
+	}, []);
 	async function onSubmit() {
 		const checkEmail = await axios
-			.get("http://localhost:2000/Users/v1", {
-				params: { emna: account.emna, password: account.password },
+			.patch("http://localhost:2000/Users/changePass", account, {
+				params: { id: account.id },
 			})
 			.then((res) => {
-				localStorage.setItem("token", JSON.stringify(res.data.token));
 				if (res.data.id) {
+					console.log(res.data);
 					return true;
 				} else {
 					return false;
 				}
 			});
 		if (checkEmail) {
-			console.log(checkEmail);
-			return alert("login berhasil");
+			return alert("password change berhasil");
 		} else {
-			return alert("email doesnt exist");
+			return alert("password change failed");
 		}
 	}
 	async function inputHandler(event) {
@@ -56,9 +59,9 @@ export default function Login() {
 					alignItems={"center"}
 				>
 					<Center paddingTop={"40px"} paddingBottom={"20px"}>
-						Sign into your Account
+						Enter New Password
 					</Center>
-					<Box>
+					<Center>
 						<InputGroup
 							gap={"20px"}
 							paddingLeft={"30px"}
@@ -70,42 +73,22 @@ export default function Login() {
 							alignItems={"center"}
 						>
 							<Input
-								placeholder="Email"
-								w={"300px"}
-								h={"48px"}
-								border={"1px solid #A5A5A5"}
-								value={account.emna}
-								id="emna"
-								onChange={inputHandler}
-							></Input>
-							<Input
-								placeholder="Password"
+								placeholder="password"
 								w={"300px"}
 								h={"48px"}
 								border={"1px solid #A5A5A5"}
 								id="password"
-								type={"password"}
 								value={account.password}
 								onChange={inputHandler}
 							></Input>
+							<Input
+								placeholder="password"
+								w={"300px"}
+								h={"48px"}
+								border={"1px solid #A5A5A5"}
+							></Input>
 						</InputGroup>
-						<Link>
-							<Link to={"/forget"}>
-								<Flex
-									gap={"20px"}
-									paddingLeft={"30px"}
-									paddingRight={"30px"}
-									paddingBottom={"20px"}
-									color={"blue.600"}
-									textDecor={"underline"}
-									onClick={forgetPass}
-								>
-									Forget Password
-								</Flex>
-							</Link>
-						</Link>
-					</Box>
-
+					</Center>
 					<Center
 						w={"150px"}
 						h={"48px"}
@@ -113,16 +96,8 @@ export default function Login() {
 						border={"1px solid #A5A5A5"}
 						onClick={onSubmit}
 					>
-						LOGIN
+						Forget
 					</Center>
-
-					<Center paddingTop={"20px"}>Don't have an account?</Center>
-
-					<Link to={"/register"}>
-						<Center color={"blue.600"} textDecor={"underline"}>
-							SIGN UP
-						</Center>
-					</Link>
 				</Center>
 			</Box>
 		</Center>
