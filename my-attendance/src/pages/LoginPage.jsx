@@ -1,12 +1,9 @@
 import "../css/login.css";
-import { Box, Center, InputGroup, Input } from "@chakra-ui/react";
+import { Box, Center, InputGroup, Input, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 export default function Login() {
 	return (
-
-
-		
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"}>
 				<Center
@@ -44,6 +41,18 @@ export default function Login() {
 								type={"password"}
 							></Input>
 						</InputGroup>
+						<Link>
+							<Flex
+								gap={"20px"}
+								paddingLeft={"30px"}
+								paddingRight={"30px"}
+								paddingBottom={"20px"}
+								color={"blue.600"}
+								textDecor={"underline"}
+							>
+								Forget Password
+							</Flex>
+						</Link>
 					</Box>
 
 					<Center
