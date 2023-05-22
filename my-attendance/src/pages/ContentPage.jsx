@@ -125,6 +125,7 @@ export default function Content() {
 										color={"white"}
 										onClick={addClock}
 										cursor={"pointer"}
+										id="clockIn"
 									>
 										Clock In
 									</Flex>
@@ -138,6 +139,7 @@ export default function Content() {
 										color={"white"}
 										onClick={addClock}
 										cursor={"pointer"}
+										id="clockOut"
 									>
 										Clock Out
 									</Flex>
@@ -183,9 +185,7 @@ function Log(props) {
 					<Flex>07:30</Flex>
 					<Flex>17 May</Flex>
 				</Flex>
-				<Flex w={"70px"} justifyContent={"center"} id="clock">
-					Clock In
-				</Flex>
+				<Flex w={"70px"} justifyContent={"center"} id="clock"></Flex>
 				<Flex w={"70px"} justifyContent={"end"} id="icon">
 					<Icon as={IoIosArrowForward}></Icon>
 				</Flex>

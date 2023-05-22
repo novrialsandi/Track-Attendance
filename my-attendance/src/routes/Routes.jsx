@@ -4,6 +4,7 @@ import RegisterPage from "../pages/RegisterPage";
 import ContentPage from "../pages/ContentPage";
 import LogPage from "../pages/LogPage";
 import ForgetPage from "../pages/ForgetPage";
+import EmailPage from "../pages/EmailPage";
 
 const routes = [
 	<Route path="/" element={<ContentPage />}></Route>,
@@ -11,6 +12,7 @@ const routes = [
 	<Route path="/register" element={<RegisterPage />}></Route>,
 	<Route path="/log" element={<LogPage />}></Route>,
 	<Route path="/forget" element={<ForgetPage />}></Route>,
+	<Route path="/email" element={<EmailPage />}></Route>,
 ];
 
 export default routes;

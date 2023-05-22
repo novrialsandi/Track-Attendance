@@ -59,6 +59,28 @@ export default function ForgetPass() {
 					alignItems={"center"}
 				>
 					<Center paddingTop={"40px"} paddingBottom={"20px"}>
+						Enter Your Email
+					</Center>
+					<Center>
+						<InputGroup
+							gap={"20px"}
+							paddingLeft={"30px"}
+							paddingRight={"30px"}
+							paddingBottom={"20px"}
+							display={"flex"}
+							flexDir={"column"}
+							justifyContent={"center"}
+							alignItems={"center"}
+						>
+							<Input
+								placeholder=""
+								w={"300px"}
+								h={"48px"}
+								border={"1px solid #A5A5A5"}
+							></Input>
+						</InputGroup>
+					</Center>
+					<Center paddingTop={"40px"} paddingBottom={"20px"}>
 						Enter New Password
 					</Center>
 					<Center>
@@ -95,6 +117,7 @@ export default function ForgetPass() {
 						borderRadius={"25px"}
 						border={"1px solid #A5A5A5"}
 						onClick={onSubmit}
+						cursor={"pointer"}
 					>
 						Forget
 					</Center>

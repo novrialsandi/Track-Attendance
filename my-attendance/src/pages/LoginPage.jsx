@@ -26,18 +26,19 @@ export default function Login() {
 			})
 			.then((res) => {
 				localStorage.setItem("token", JSON.stringify(res.data.token));
-				if (res.data.id) {
-					return true;
+				// if (res.data.id) {
+				// 	return true;
+				// } else {
+				// 	return false;
+				// }
+				console.log(res.data);
+
+				if (res.data.value) {
+					return alert("login berhasil");
 				} else {
-					return false;
+					return alert("email doesnt exist");
 				}
 			});
-		if (checkEmail) {
-			console.log(checkEmail);
-			return alert("login berhasil");
-		} else {
-			return alert("email doesnt exist");
-		}
 	}
 	async function inputHandler(event) {
 		const { value, id } = event.target;
