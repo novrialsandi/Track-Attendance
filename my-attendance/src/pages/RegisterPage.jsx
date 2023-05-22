@@ -9,6 +9,13 @@ import { useState } from "react";
 export default function Register() {
 	const nav = useNavigate();
 
+	const [account, setAccount] = useState({
+		name: "",
+		email: "",
+		address: "",
+		password: "",
+		company_id: "",
+	});
 	const [companyList, setCompanyList] = useState([]);
 
 	const companyId = async () => {
@@ -19,7 +26,6 @@ export default function Register() {
 				console.log(res.data);
 			});
 	};
-
 	const formik = useFormik({
 		initialValues: {
 			name: "",
@@ -46,10 +52,10 @@ export default function Register() {
 		onSubmit: async () => {
 			const { name, email, address, password, company_id } =
 				formik.values;
-			const account = { name, email, address, password, company_id };
+			setAccount({ name, email, address, password, company_id });
 			const checkEmail = await axios
 				.get("http://localhost:2000/v1", {
-					params: { email: account.email },
+					params: { emna: account.email, password: account.password },
 				})
 				.then((res) => {
 					if (res.data.length) {
@@ -62,18 +68,48 @@ export default function Register() {
 				return alert("email already used");
 			} else {
 				await axios
-					.post("http://localhost:2000/Users", account)
+					.post("http://localhost:2000/Users/", account.values)
 					.then((res) => {
 						nav("/login");
+						console.log(res);
 					});
 			}
 		},
 	});
 
-	function inputHandler(event) {
+	async function onSubmit() {
+		const { name, email, address, password, company_id } = formik.values;
+		setAccount({ name, email, address, password, company_id });
+		console.log(account);
+		const checkEmail = await axios
+			.get("http://localhost:2000/Users/v1", {
+				params: { emna: account.email, password: account.password },
+			})
+			.then((res) => {
+				if (res.data.length) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+		if (checkEmail) {
+			return alert("email already used");
+		} else {
+			await axios
+				.post("http://localhost:2000/Users/", account)
+				.then((res) => {
+					nav("/login");
+					console.log(res.data);
+				});
+		}
+	}
+
+	async function inputHandler(event) {
 		const { value, id } = event.target;
 		formik.setFieldValue(id, value);
 	}
+
+	console.log(formik);
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
@@ -205,7 +241,7 @@ export default function Register() {
 						h={"48px"}
 						borderRadius={"25px"}
 						border={"1px solid #A5A5A5"}
-						onClick={inputHandler}
+						onClick={onSubmit}
 						cursor={"pointer"}
 					>
 						Register Now
