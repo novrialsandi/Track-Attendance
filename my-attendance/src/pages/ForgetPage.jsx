@@ -73,7 +73,7 @@ export default function ForgetPass() {
 							alignItems={"center"}
 						>
 							<Input
-								placeholder="password"
+								placeholder="New Password"
 								w={"300px"}
 								h={"48px"}
 								border={"1px solid #A5A5A5"}
@@ -82,7 +82,7 @@ export default function ForgetPass() {
 								onChange={inputHandler}
 							></Input>
 							<Input
-								placeholder="password"
+								placeholder="Confirm New Password"
 								w={"300px"}
 								h={"48px"}
 								border={"1px solid #A5A5A5"}

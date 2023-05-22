@@ -112,6 +112,7 @@ export default function Login() {
 						borderRadius={"25px"}
 						border={"1px solid #A5A5A5"}
 						onClick={onSubmit}
+						cursor={"pointer"}
 					>
 						LOGIN
 					</Center>
