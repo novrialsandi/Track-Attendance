@@ -5,11 +5,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function ForgetEmail() {
-	// const [account, setAccount] = useState({
-	// 	id: "",
-	// 	emna: "",
-	// 	password: "",
-	// });
+	const [account, setAccount] = useState({
+		email: "",
+	});
+	async function forgetPass() {
+		const checkEmail = await axios
+			.get("http://localhost:2000/Users/forgetPass", {
+				params: { emna: account.email },
+			})
+			.then((res) => {});
+	}
 	// async function fetchAcc() {
 	// 	await axios
 	// 		.get("http://localhost:2000/Users/token2", {
@@ -42,12 +47,12 @@ export default function ForgetEmail() {
 	// 		return alert("password change failed");
 	// 	}
 	// }
-	// async function inputHandler(event) {
-	// 	const { value, id } = event.target;
-	// 	const tempObj = { ...account };
-	// 	tempObj[id] = value;
-	// 	setAccount(tempObj);
-	// }
+	async function inputHandler(event) {
+		const { value, id } = event.target;
+		const tempObj = { ...account };
+		tempObj[id] = value;
+		setAccount(tempObj);
+	}
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
@@ -59,7 +64,7 @@ export default function ForgetEmail() {
 					alignItems={"center"}
 				>
 					<Center paddingTop={"40px"} paddingBottom={"20px"}>
-						Enter Your Email
+						Enter Your Email To Forget Password
 					</Center>
 					<Center>
 						<InputGroup
@@ -77,6 +82,9 @@ export default function ForgetEmail() {
 								w={"300px"}
 								h={"48px"}
 								border={"1px solid #A5A5A5"}
+								value={account.email}
+								id="email"
+								onChange={inputHandler}
 							></Input>
 						</InputGroup>
 					</Center>

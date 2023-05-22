@@ -186,25 +186,38 @@ const userController = {
 	},
 	forgetPass: async (req, res) => {
 		try {
-			const { emna } = req.query;
+			const { email } = req.query;
 			const user = await db.User.findOne({
 				where: {
-					email: emna,
+					email: email,
 				},
 			});
-			if (user) {
+			if (user.dataValues) {
+				//check apa ada token yg mengarah ke id user tsb
+				await db.Token.update(
+					{
+						valid: false,
+					},
+					{
+						where: {
+							payload: JSON.stringify({ id: user.dataValues.id }),
+							status: "FORGOT-PASSWORD",
+						},
+					}
+				);
 				const payload = {
 					id: user.dataValues.id,
 				};
 				const generateToken = nanoid();
 				const token = await db.Token.create({
-					expired: moment().add(1, "d").format(),
+					expired: moment().add(5, "minutes").format(),
 					token: generateToken,
 					payload: JSON.stringify(payload),
+					status: "FORGOT-PASSWORD",
 				});
 				return res.send({
+					nav: "/forget/" + token.dataValues.token,
 					message: "email ada",
-					value: user,
 					token: token.dataValues.token,
 				});
 			}

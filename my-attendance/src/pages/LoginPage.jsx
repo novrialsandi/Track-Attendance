@@ -91,7 +91,7 @@ export default function Login() {
 							></Input>
 						</InputGroup>
 						<Link>
-							<Link to={"/forget"}>
+							<Link to={"/email"}>
 								<Flex
 									gap={"20px"}
 									paddingLeft={"30px"}

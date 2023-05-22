@@ -11,8 +11,8 @@ const routes = [
 	<Route path="/login" element={<LoginPage />}></Route>,
 	<Route path="/register" element={<RegisterPage />}></Route>,
 	<Route path="/log" element={<LogPage />}></Route>,
-	<Route path="/forget" element={<ForgetPage />}></Route>,
-	<Route path="/email" element={<EmailPage />}></Route>,
+	<Route path="/forget/:token" element={<ForgetPage />}></Route>,
+	<Route path="/forget/request" element={<EmailPage />}></Route>,
 ];
 
 export default routes;
