@@ -4,18 +4,15 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Register() {
 	const nav = useNavigate();
 
-	const [account, setAccount] = useState({
-		name: "",
-		email: "",
-		address: "",
-		password: "",
-		company_id: "",
-	});
+	useEffect(() => {
+		companyId();
+	}, []);
+
 	const [companyList, setCompanyList] = useState([]);
 
 	const companyId = async () => {
@@ -52,9 +49,10 @@ export default function Register() {
 		onSubmit: async () => {
 			const { name, email, address, password, company_id } =
 				formik.values;
-			setAccount({ name, email, address, password, company_id });
+			const account = { name, email, address, password, company_id };
+			console.log(account);
 			const checkEmail = await axios
-				.get("http://localhost:2000/v1", {
+				.get("http://localhost:2000/Users/v1", {
 					params: { emna: account.email, password: account.password },
 				})
 				.then((res) => {
@@ -68,41 +66,14 @@ export default function Register() {
 				return alert("email already used");
 			} else {
 				await axios
-					.post("http://localhost:2000/Users/", account.values)
+					.post("http://localhost:2000/Users/", account)
 					.then((res) => {
+						alert("register was successful");
 						nav("/login");
-						console.log(res);
 					});
 			}
 		},
 	});
-
-	async function onSubmit() {
-		const { name, email, address, password, company_id } = formik.values;
-		setAccount({ name, email, address, password, company_id });
-		console.log(account);
-		const checkEmail = await axios
-			.get("http://localhost:2000/Users/v1", {
-				params: { emna: account.email, password: account.password },
-			})
-			.then((res) => {
-				if (res.data.length) {
-					return true;
-				} else {
-					return false;
-				}
-			});
-		if (checkEmail) {
-			return alert("email already used");
-		} else {
-			await axios
-				.post("http://localhost:2000/Users/", account)
-				.then((res) => {
-					nav("/login");
-					console.log(res.data);
-				});
-		}
-	}
 
 	async function inputHandler(event) {
 		const { value, id } = event.target;
@@ -219,7 +190,6 @@ export default function Register() {
 								border={"1px solid #A5A5A5"}
 								placeholder="Select Company"
 								id="company_id"
-								onClick={companyId}
 							>
 								{companyList.map((val) => (
 									<option value={val.id}>{val.name}</option>
@@ -241,7 +211,7 @@ export default function Register() {
 						h={"48px"}
 						borderRadius={"25px"}
 						border={"1px solid #A5A5A5"}
-						onClick={onSubmit}
+						onClick={formik.handleSubmit}
 						cursor={"pointer"}
 					>
 						Register Now

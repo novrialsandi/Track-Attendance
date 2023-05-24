@@ -1,22 +1,49 @@
 import "../css/content.css";
-import { Box, Center, Flex, Icon } from "@chakra-ui/react";
+import { Avatar, Box, Center, Flex, Icon } from "@chakra-ui/react";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Content() {
-	const [clock, setClock] = useState([]);
-	const [toClock, setToClock] = useState({ date: "", clock: "", icon: "" });
+	const userSelector = useSelector((state) => state.auth);
+	const [clock, setClock] = useState({});
 
-	function addClock() {
-		const tempArr = [...clock];
-		tempArr.push(toClock);
-		setClock(tempArr);
+	useEffect(() => {
+		console.log(userSelector);
+		if (userSelector.id) {
+			getClock();
+		}
+	}, [userSelector]);
 
-		setToClock({ date: "", clock: "", icon: "" });
+	useEffect(() => {
+		getClock();
+	}, [clock]);
+
+	async function getClock() {
+		const attLog = await axios.get(
+			"http://localhost:2000/attendancelog/today",
+			{
+				params: { user_id: userSelector.id },
+			}
+		);
+		setClock(attLog.data);
 	}
-	console.log(addClock);
+
+	async function addClockIn() {
+		await axios.post(
+			"http://localhost:2000/attendancelog?user_id=" + userSelector.id
+		);
+		getClock();
+	}
+	async function addClockOut() {
+		await axios.patch(
+			"http://localhost:2000/attendancelog?user_id=" + userSelector.id
+		);
+		getClock();
+	}
 
 	const [time, setTime] = useState(moment());
 	const Clock = () => {
@@ -39,13 +66,6 @@ export default function Content() {
 		);
 	};
 
-	function inputHandler(event) {
-		const { value, id } = event.target;
-		const tempObj = { ...toClock };
-		tempObj[id] = value;
-		setToClock(tempObj);
-	}
-
 	const [date, setDate] = useState(moment());
 	const Date = () => {
 		useEffect(() => {
@@ -67,24 +87,27 @@ export default function Content() {
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
-			<Box id="boxLogin" w={"390px"} h={"844px"}>
-				<Box h={"422px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
+			<Box
+				id="boxLogin"
+				w={"390px"}
+				h={"100vh"}
+				maxHeight={"700px"}
+				minHeight={"650px"}
+			>
+				<Box h={"480px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
 					<Center
 						paddingTop={"40px"}
-						paddingBottom={"20px"}
+						paddingBottom={"10px"}
 						fontSize={"30px"}
 						color={"white"}
 					>
 						Live Attendance
 					</Center>
-					<Center color={"white"}>{Date()}</Center>
-					<Center
-						id="date"
-						onChange={inputHandler}
-						value={toClock.date}
-					>
-						{Clock()}
+					<Center>
+						<Avatar marginY={"5px"} src={userSelector.avatar_url} />
 					</Center>
+					<Center color={"white"}>{Date()}</Center>
+					<Center id="date">{Clock()}</Center>
 					<Center>
 						<Box
 							id="boxCheck"
@@ -123,7 +146,7 @@ export default function Content() {
 										bg={"#035ebf"}
 										borderRadius={"10px"}
 										color={"white"}
-										onClick={addClock}
+										onClick={addClockIn}
 										cursor={"pointer"}
 									>
 										Clock In
@@ -136,7 +159,7 @@ export default function Content() {
 										bg={"#035ebf"}
 										borderRadius={"10px"}
 										color={"white"}
-										onClick={addClock}
+										onClick={addClockOut}
 										cursor={"pointer"}
 									>
 										Clock Out
@@ -146,7 +169,6 @@ export default function Content() {
 						</Box>
 					</Center>
 				</Box>
-
 				<Box>
 					<Flex
 						justifyContent={"space-between"}
@@ -159,37 +181,71 @@ export default function Content() {
 							<Flex color={"#9a9a9a"}>View Log</Flex>
 						</Link>
 					</Flex>
-					{clock.map((val) => (
-						<Log {...val} />
-					))}
 				</Box>
+				{clock.clock_in ? (
+					<div>
+						<Flex
+							justifyContent={"space-between"}
+							w={"100%"}
+							paddingLeft={"15px"}
+							paddingRight={"15px"}
+							alignItems={"center"}
+							borderBottom={"1px"}
+							paddingTop={"20px"}
+						>
+							<Flex flexDir={"column"} w={"70px"}>
+								<Flex>
+									{moment(clock.clock_in).format("HH:mm")}
+								</Flex>
+								<Flex>
+									{moment().format("ll").split(",")[0]}
+								</Flex>
+							</Flex>
+							<Flex
+								w={"70px"}
+								justifyContent={"center"}
+								id="clock"
+							>
+								Clock In
+							</Flex>
+							<Flex w={"70px"} justifyContent={"end"} id="icon">
+								<Icon as={IoIosArrowForward}></Icon>
+							</Flex>
+						</Flex>
+					</div>
+				) : null}
+				{clock.clock_out ? (
+					<div>
+						<Flex
+							justifyContent={"space-between"}
+							w={"100%"}
+							paddingLeft={"15px"}
+							paddingRight={"15px"}
+							alignItems={"center"}
+							borderBottom={"1px"}
+						>
+							<Flex flexDir={"column"} w={"70px"}>
+								<Flex>
+									{moment(clock.clock_out).format("HH:mm")}
+								</Flex>
+								<Flex>
+									{moment().format("ll").split(",")[0]}
+								</Flex>
+							</Flex>
+							<Flex
+								w={"70px"}
+								justifyContent={"center"}
+								id="clock"
+							>
+								Clock Out
+							</Flex>
+							<Flex w={"70px"} justifyContent={"end"} id="icon">
+								<Icon as={IoIosArrowForward}></Icon>
+							</Flex>
+						</Flex>
+					</div>
+				) : null}
 			</Box>
 		</Center>
-	);
-}
-
-function Log(props) {
-	return (
-		<div>
-			<Flex
-				justifyContent={"space-between"}
-				w={"100%"}
-				paddingLeft={"15px"}
-				paddingRight={"15px"}
-				alignItems={"center"}
-				borderBottom={"1px"}
-			>
-				<Flex flexDir={"column"} w={"70px"}>
-					<Flex>07:30</Flex>
-					<Flex>17 May</Flex>
-				</Flex>
-				<Flex w={"70px"} justifyContent={"center"} id="clock">
-					Clock In
-				</Flex>
-				<Flex w={"70px"} justifyContent={"end"} id="icon">
-					<Icon as={IoIosArrowForward}></Icon>
-				</Flex>
-			</Flex>
-		</div>
 	);
 }

@@ -1,4 +1,5 @@
 const express = require("express");
+const { fileUploader } = require("../middlewares/multer");
 const router = express.Router();
 const userController = require("../controllers").userController;
 
@@ -8,5 +9,22 @@ router.get("/v2", userController.getUser2); // login by nanoid and set local sto
 router.get("/token", userController.getByToken); // get bcrypt-ed id from local storage
 router.get("/token2", userController.getByToken2); // get nanoid-ed id from local storage
 router.get("/forgetPass", userController.forgetPass); // login by email & generate nanoid
-router.patch("/changePass", userController.changePass);
+router.get(
+  "/token2",
+  userController.getByToken2,
+  userController.getUserByToken
+); // get user and req it back with req.user
+router.post(
+  "/image/v1/:id",
+  fileUploader({
+    destinationFolder: "avatar",
+  }).single("avatar"),
+  userController.uploadAvatar
+);
+router.patch(
+  "/token2/changePass",
+  userController.getByToken2,
+  userController.changePass
+);
+
 module.exports = router;

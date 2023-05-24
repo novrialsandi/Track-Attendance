@@ -1,45 +1,47 @@
 import "../css/login.css";
-import { Box, Center, InputGroup, Input, Flex } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import {
+	Box,
+	Center,
+	InputGroup,
+	Input,
+	Flex,
+	Toast,
+	useToast,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../redux/midllewares/userauth";
 
 export default function Login() {
+	const dispatch = useDispatch();
+	const nav = useNavigate();
+	const toast = useToast();
 	const [account, setAccount] = useState({
 		emna: "",
 		password: "",
 	});
-	async function forgetPass() {
-		const checkEmail = await axios
-			.get("http://localhost:2000/Users/forgetPass", {
-				params: { emna: account.emna },
-			})
-			.then((res) => {
-				console.log(res.data);
-				localStorage.setItem("token", JSON.stringify(res.data.token));
-			});
-	}
-	async function onSubmit() {
-		const checkEmail = await axios
-			.get("http://localhost:2000/Users/v1", {
-				params: { emna: account.emna, password: account.password },
-			})
-			.then((res) => {
-				localStorage.setItem("token", JSON.stringify(res.data.token));
-				// if (res.data.id) {
-				// 	return true;
-				// } else {
-				// 	return false;
-				// }
-				console.log(res.data);
 
-				if (res.data.value) {
-					return alert("login berhasil");
-				} else {
-					return alert("email doesnt exist");
-				}
+	async function onSubmit() {
+		toast.closeAll();
+		const status = await dispatch(userLogin(account));
+		if (status) {
+			toast({
+				title: "You are successfully logged in",
+				status: "success",
+				isClosable: true,
 			});
+			return nav("/");
+		}
+		return toast({
+			title: "wrong email/password",
+			status: "error",
+			duration: 9000,
+			isClosable: true,
+		});
 	}
+
 	async function inputHandler(event) {
 		const { value, id } = event.target;
 		const tempObj = { ...account };
@@ -91,7 +93,7 @@ export default function Login() {
 							></Input>
 						</InputGroup>
 						<Link>
-							<Link to={"/email"}>
+							<Link to={"/forget/request"}>
 								<Flex
 									gap={"20px"}
 									paddingLeft={"30px"}
@@ -99,7 +101,6 @@ export default function Login() {
 									paddingBottom={"20px"}
 									color={"blue.600"}
 									textDecor={"underline"}
-									onClick={forgetPass}
 								>
 									Forget Password
 								</Flex>
