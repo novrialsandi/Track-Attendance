@@ -87,13 +87,7 @@ export default function Content() {
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
-			<Box
-				id="boxLogin"
-				w={"390px"}
-				h={"100vh"}
-				maxHeight={"700px"}
-				minHeight={"650px"}
-			>
+			<Box id="boxLogin" w={"390px"} h={"844px"} maxHeight={"844px"}>
 				<Box h={"480px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
 					<Center
 						paddingTop={"40px"}

@@ -15,15 +15,15 @@ const store = configureStore({ reducer: rootReducer, middleware: [thunk] });
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-	<Provider store={store}>
-		<ChakraProvider>
-			<BrowserRouter>
-				<AuthProvider>
-					<App />
-				</AuthProvider>
-			</BrowserRouter>
-		</ChakraProvider>
-	</Provider>
+  <Provider store={store}>
+    <ChakraProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </BrowserRouter>
+    </ChakraProvider>
+  </Provider>
 );
 
 reportWebVitals();
