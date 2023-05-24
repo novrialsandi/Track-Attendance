@@ -10,8 +10,8 @@ export default function AuthProvider({ children }) {
     if (token) {
       const userData = await axios
         .get("http://localhost:2000/Users/token2", {
-          params: {
-            token,
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => res.data);

@@ -68,8 +68,6 @@ const attlogController = {
   },
   insertAttlog: async (req, res) => {
     try {
-      console.log(req.query);
-      // console.log();
       const { user_id } = req.query;
       const attLog = await db.Attendancelog.findOne({
         where: {

@@ -25,9 +25,8 @@ export default function Content() {
 	const inputFileRef = useRef(null);
 	const nav = useNavigate();
 	const dispatch = useDispatch();
-
 	const [selectedFile, setSelectedFile] = useState(null);
-
+	let user;
 	const handleFile = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
@@ -108,10 +107,26 @@ export default function Content() {
 		formData.append("avatar", selectedFile);
 		await axios
 			.post(
-				"http://localhost:2000/auth/image/v2" + userSelector.id,
+				"http://localhost:2000/Users/image/v1/" + userSelector.id,
 				formData
 			)
-			.then((res) => alert(res.data));
+			.then((res) => (user = res.data));
+		const token = JSON.parse(localStorage.getItem("token"));
+		if (token) {
+			const userData = await axios
+				.get("http://localhost:2000/Users/token2", {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				})
+				.then((res) => res.data);
+			if (user) {
+				await dispatch({
+					type: auth_types.login,
+					payload: userData,
+				});
+			}
+		}
 	}
 
 	function logout() {
@@ -128,17 +143,34 @@ export default function Content() {
 						justifyContent={"end"}
 						paddingRight={"15px"}
 						paddingTop={"15px"}
+						gap={"10px"}
 					>
-						<Icon
-							as={FiLogOut} //AiOutlineCheck
-							boxSize={"30px"}
-							color={"white"}
-							border={"1px"}
-							borderRadius={"5px"}
-							onClick={logout}
-							cursor={"pointer"}
-							_hover={{ color: "black" }}
-						></Icon>
+						{selectedFile ? (
+							<Icon
+								as={AiOutlineCheck} //AiOutlineCheck
+								boxSize={"30px"}
+								color={"white"}
+								border={"1px"}
+								borderRadius={"5px"}
+								onClick={() => {
+									uploadAvatar();
+									setSelectedFile("");
+								}}
+								cursor={"pointer"}
+								_hover={{ color: "black" }}
+							></Icon>
+						) : (
+							<Icon
+								as={FiLogOut} //AiOutlineCheck
+								boxSize={"30px"}
+								color={"white"}
+								border={"1px"}
+								borderRadius={"5px"}
+								onClick={logout}
+								cursor={"pointer"}
+								_hover={{ color: "black" }}
+							></Icon>
+						)}
 					</Flex>
 					<Center
 						paddingTop={"20px"}
@@ -170,9 +202,6 @@ export default function Content() {
 								h={"50px"}
 							/>
 						</Button>
-						{/* <Button onClick={uploadAvatar} colorScheme="teal">
-					Change Icon
-				</Button> */}
 					</Center>
 					<Center color={"white"}>{Date()}</Center>
 					<Center id="date">{Clock()}</Center>
