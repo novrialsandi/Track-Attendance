@@ -1,15 +1,36 @@
 import "../css/content.css";
-import { Avatar, Box, Center, Flex, Icon } from "@chakra-ui/react";
+import {
+	Avatar,
+	Box,
+	Button,
+	Center,
+	Flex,
+	Icon,
+	Input,
+} from "@chakra-ui/react";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { FiLogOut } from "react-icons/fi";
+import { AiOutlineCheck } from "react-icons/ai";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { auth_types } from "../redux/types";
+import { useNavigate } from "react-router-dom";
 
 export default function Content() {
 	const userSelector = useSelector((state) => state.auth);
 	const [clock, setClock] = useState({});
+	const inputFileRef = useRef(null);
+	const nav = useNavigate();
+	const dispatch = useDispatch();
+
+	const [selectedFile, setSelectedFile] = useState(null);
+
+	const handleFile = (event) => {
+		setSelectedFile(event.target.files[0]);
+	};
 
 	useEffect(() => {
 		console.log(userSelector);
@@ -25,6 +46,7 @@ export default function Content() {
 				params: { user_id: userSelector.id },
 			}
 		);
+		console.log(attLog);
 		setClock(attLog.data);
 	}
 
@@ -81,12 +103,45 @@ export default function Content() {
 		);
 	};
 
+	async function uploadAvatar() {
+		const formData = new FormData();
+		formData.append("avatar", selectedFile);
+		await axios
+			.post(
+				"http://localhost:2000/auth/image/v2" + userSelector.id,
+				formData
+			)
+			.then((res) => alert(res.data));
+	}
+
+	function logout() {
+		dispatch({ type: auth_types.logout });
+		localStorage.removeItem("token");
+		nav("/login");
+	}
+
 	return (
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"} maxH={"844px"}>
-				<Box h={"480px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
+				<Box h={"500px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
+					<Flex
+						justifyContent={"end"}
+						paddingRight={"15px"}
+						paddingTop={"15px"}
+					>
+						<Icon
+							as={FiLogOut} //AiOutlineCheck
+							boxSize={"30px"}
+							color={"white"}
+							border={"1px"}
+							borderRadius={"5px"}
+							onClick={logout}
+							cursor={"pointer"}
+							_hover={{ color: "black" }}
+						></Icon>
+					</Flex>
 					<Center
-						paddingTop={"40px"}
+						paddingTop={"20px"}
 						paddingBottom={"10px"}
 						fontSize={"30px"}
 						color={"white"}
@@ -94,10 +149,33 @@ export default function Content() {
 						Live Attendance
 					</Center>
 					<Center>
-						<Avatar marginY={"5px"} src={userSelector.avatar_url} />
+						<Input
+							accept="image/png, image/jpeg"
+							ref={inputFileRef}
+							type="file"
+							onChange={handleFile}
+							display={"none"}
+						></Input>
+						<Button
+							onClick={() => inputFileRef.current.click()}
+							colorScheme="teal"
+							w={"50px"}
+							h={"50px"}
+							borderRadius={"50px"}
+						>
+							<Avatar
+								marginY={"5px"}
+								src={userSelector.avatar_url}
+								w={"50px"}
+								h={"50px"}
+							/>
+						</Button>
+						{/* <Button onClick={uploadAvatar} colorScheme="teal">
+					Change Icon
+				</Button> */}
 					</Center>
 					<Center color={"white"}>{Date()}</Center>
-					<Center id="month">{Clock()}</Center>
+					<Center id="date">{Clock()}</Center>
 					<Center>
 						<Box
 							id="boxCheck"
@@ -133,11 +211,12 @@ export default function Content() {
 										h={"50px"}
 										justifyContent={"center"}
 										alignItems={"center"}
-										bg={"#035ebf"}
+										bg={"#031eaf"}
+										_hover={{ bg: "#035ebf" }}
 										borderRadius={"10px"}
 										color={"white"}
 										onClick={
-											clock.clock_in ? addClockIn : null
+											!clock.clock_in ? addClockIn : null
 										}
 										cursor={"pointer"}
 									>
@@ -148,11 +227,14 @@ export default function Content() {
 										h={"50px"}
 										justifyContent={"center"}
 										alignItems={"center"}
-										bg={"#035ebf"}
+										bg={"#031eaf"}
+										_hover={{ bg: "#035ebf" }}
 										borderRadius={"10px"}
 										color={"white"}
 										onClick={
-											clock.clock_out ? addClockOut : null
+											!clock.clock_out
+												? addClockOut
+												: null
 										}
 										cursor={"pointer"}
 									>
@@ -172,10 +254,17 @@ export default function Content() {
 					>
 						<Flex fontSize={"22px"}>Attendance Log</Flex>
 						<Link to={"/log"}>
-							<Flex color={"#9a9a9a"}>View Log</Flex>
+							<Flex
+								color={"#9a9a9a"}
+								h={"100%"}
+								alignItems={"center"}
+							>
+								View Log
+							</Flex>
 						</Link>
 					</Flex>
 				</Box>
+
 				{clock.clock_in ? (
 					<div>
 						<Flex
@@ -185,9 +274,8 @@ export default function Content() {
 							paddingRight={"15px"}
 							alignItems={"center"}
 							borderBottom={"1px"}
-							paddingTop={"20px"}
 						>
-							<Flex flexDir={"column"} w={"70px"}>
+							<Flex flexDir={"column"} w={"80px"}>
 								<Flex>
 									{moment(clock.clock_in).format("HH:mm")}
 								</Flex>
@@ -196,13 +284,13 @@ export default function Content() {
 								</Flex>
 							</Flex>
 							<Flex
-								w={"70px"}
+								w={"80px"}
 								justifyContent={"center"}
 								id="clock"
 							>
 								Clock In
 							</Flex>
-							<Flex w={"70px"} justifyContent={"end"} id="icon">
+							<Flex w={"80px"} justifyContent={"end"} id="icon">
 								<Icon as={IoIosArrowForward}></Icon>
 							</Flex>
 						</Flex>
@@ -218,7 +306,7 @@ export default function Content() {
 							alignItems={"center"}
 							borderBottom={"1px"}
 						>
-							<Flex flexDir={"column"} w={"70px"}>
+							<Flex flexDir={"column"} w={"80px"}>
 								<Flex>
 									{moment(clock.clock_out).format("HH:mm")}
 								</Flex>
@@ -227,13 +315,13 @@ export default function Content() {
 								</Flex>
 							</Flex>
 							<Flex
-								w={"70px"}
+								w={"80px"}
 								justifyContent={"center"}
 								id="clock"
 							>
 								Clock Out
 							</Flex>
-							<Flex w={"70px"} justifyContent={"end"} id="icon">
+							<Flex w={"80px"} justifyContent={"end"} id="icon">
 								<Icon as={IoIosArrowForward}></Icon>
 							</Flex>
 						</Flex>
