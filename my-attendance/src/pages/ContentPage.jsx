@@ -192,6 +192,9 @@ export default function Content() {
 							paddingTop={"5px"}
 							paddingLeft={"15px"}
 							paddingRight={"15px"}
+							border={"1px"}
+							borderColor={"white"}
+							borderRadius={"10px"}
 						>
 							<Input
 								accept="image/png, image/jpeg"
