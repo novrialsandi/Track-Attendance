@@ -23,7 +23,13 @@ export default function Log() {
 						</Link>
 						<Center paddingLeft={"45px"}>Attendance Log</Center>
 					</Flex>
-					<Flex flexDir={"column"} padding={"15px"} fontSize={"20px"}>
+					<Flex
+						flexDir={"column"}
+						paddingBottom={"15px"}
+						paddingLeft={"15px"}
+						paddingRight={"15px"}
+						fontSize={"20px"}
+					>
 						<Flex>Select month:</Flex>
 						<Input type="month"></Input>
 					</Flex>

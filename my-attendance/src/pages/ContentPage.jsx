@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { auth_types } from "../redux/types";
 import { useNavigate } from "react-router-dom";
+import englishLocale from "moment/locale/en-gb";
+moment.locale("en-gb");
 
 export default function Content() {
 	const userSelector = useSelector((state) => state.auth);
@@ -27,6 +29,7 @@ export default function Content() {
 	const dispatch = useDispatch();
 	const [selectedFile, setSelectedFile] = useState(null);
 	let user;
+
 	const handleFile = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
@@ -61,7 +64,6 @@ export default function Content() {
 		);
 		getClock();
 	}
-
 	const [time, setTime] = useState(moment());
 	const Clock = () => {
 		useEffect(() => {
@@ -138,7 +140,11 @@ export default function Content() {
 	return (
 		<Center h={"100vh"} w={"100vw"}>
 			<Box id="boxLogin" w={"390px"} h={"844px"} maxH={"844px"}>
-				<Box h={"500px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
+				<Box
+					bg={"rgb(191,41,53)"}
+					borderRadius={"30px"}
+					paddingBottom={"20px"}
+				>
 					<Flex
 						justifyContent={"end"}
 						paddingRight={"15px"}
@@ -173,37 +179,49 @@ export default function Content() {
 						)}
 					</Flex>
 					<Center
-						paddingTop={"20px"}
+						paddingTop={"10px"}
 						paddingBottom={"10px"}
 						fontSize={"30px"}
 						color={"white"}
 					>
 						Live Attendance
 					</Center>
-					<Center>
-						<Input
-							accept="image/png, image/jpeg"
-							ref={inputFileRef}
-							type="file"
-							onChange={handleFile}
-							display={"none"}
-						></Input>
-						<Button
-							onClick={() => inputFileRef.current.click()}
-							colorScheme="teal"
-							w={"50px"}
-							h={"50px"}
-							borderRadius={"50px"}
+					<Center justifyContent={"center"}>
+						<Center
+							flexDir={"column"}
+							paddingTop={"5px"}
+							paddingLeft={"15px"}
+							paddingRight={"15px"}
 						>
-							<Avatar
-								marginY={"5px"}
-								src={userSelector.avatar_url}
+							<Input
+								accept="image/png, image/jpeg"
+								ref={inputFileRef}
+								type="file"
+								onChange={handleFile}
+								display={"none"}
+							></Input>
+							<Button
+								onClick={() => inputFileRef.current.click()}
+								colorScheme="teal"
 								w={"50px"}
 								h={"50px"}
-							/>
-						</Button>
+								borderRadius={"50px"}
+							>
+								<Avatar
+									marginY={"5px"}
+									src={userSelector.avatar_url}
+									w={"50px"}
+									h={"50px"}
+								/>
+							</Button>
+							<Center color={"white"}>
+								~{userSelector.name}~
+							</Center>
+						</Center>
 					</Center>
-					<Center color={"white"}>{Date()}</Center>
+					<Center color={"white"} paddingTop={"10px"}>
+						{Date()}
+					</Center>
 					<Center id="date">{Clock()}</Center>
 					<Center>
 						<Box
@@ -223,9 +241,6 @@ export default function Content() {
 								<Center fontWeight={"bold"}>SH2OPA</Center>
 								<Center fontWeight={"bold"} fontSize={"22"}>
 									08:00 - 17:00
-								</Center>
-								<Center color={"#617aca"}>
-									See 1 other attendance location
 								</Center>
 								<Center
 									bg={"rgb(224,235,247)"}
@@ -287,6 +302,7 @@ export default function Content() {
 								color={"#9a9a9a"}
 								h={"100%"}
 								alignItems={"center"}
+								_hover={{ color: "black" }}
 							>
 								View Log
 							</Flex>
@@ -305,11 +321,11 @@ export default function Content() {
 							borderBottom={"1px"}
 						>
 							<Flex flexDir={"column"} w={"80px"}>
-								<Flex>
+								<Flex justifyContent={"center"}>
 									{moment(clock.clock_in).format("HH:mm")}
 								</Flex>
-								<Flex>
-									{moment().format("ll").split(",")[0]}
+								<Flex justifyContent={"center"}>
+									{moment().format("l").split(",")[0]}
 								</Flex>
 							</Flex>
 							<Flex
@@ -336,11 +352,11 @@ export default function Content() {
 							borderBottom={"1px"}
 						>
 							<Flex flexDir={"column"} w={"80px"}>
-								<Flex>
+								<Flex justifyContent={"center"}>
 									{moment(clock.clock_out).format("HH:mm")}
 								</Flex>
-								<Flex>
-									{moment().format("ll").split(",")[0]}
+								<Flex justifyContent={"center"}>
+									{moment().format("l").split(",")[0]}
 								</Flex>
 							</Flex>
 							<Flex
