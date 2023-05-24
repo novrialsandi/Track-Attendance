@@ -25,7 +25,7 @@ export default function Log() {
 					</Flex>
 					<Flex flexDir={"column"} padding={"15px"} fontSize={"20px"}>
 						<Flex>Select month:</Flex>
-						<Input type="month" />
+						<Input type="date"></Input>
 					</Flex>
 				</Box>
 				<Flex

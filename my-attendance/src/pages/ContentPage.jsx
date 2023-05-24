@@ -97,7 +97,7 @@ export default function Content() {
 						<Avatar marginY={"5px"} src={userSelector.avatar_url} />
 					</Center>
 					<Center color={"white"}>{Date()}</Center>
-					<Center id="date">{Clock()}</Center>
+					<Center id="month">{Clock()}</Center>
 					<Center>
 						<Box
 							id="boxCheck"

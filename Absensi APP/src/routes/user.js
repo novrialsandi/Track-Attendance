@@ -1,5 +1,5 @@
 const express = require("express");
-const { fileUploader } = require("../middlewares/multer");
+const { fileUploader, upload } = require("../middlewares/multer");
 const router = express.Router();
 const userController = require("../controllers").userController;
 
@@ -26,5 +26,12 @@ router.patch(
   userController.getByToken2,
   userController.changePass
 );
+router.post(
+  "/image/v2/:id",
+  upload.single("avatar"),
+  userController.uploadAvatar2
+);
+
+router.get("/image/render/:id", userController.renderAvatar);
 
 module.exports = router;
