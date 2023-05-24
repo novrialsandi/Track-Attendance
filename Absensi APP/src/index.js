@@ -16,5 +16,5 @@ app.use("/attendancelog", router.attlogRouter);
 app.use("/avatar", express.static(`${__dirname}/public/avatar`));
 
 app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+	console.log(`server is running on port ${PORT}`);
 });

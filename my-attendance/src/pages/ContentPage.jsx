@@ -16,11 +16,7 @@ export default function Content() {
 		if (userSelector.id) {
 			getClock();
 		}
-	}, [userSelector]);
-
-	useEffect(() => {
-		getClock();
-	}, [clock]);
+	}, []);
 
 	async function getClock() {
 		const attLog = await axios.get(
@@ -87,7 +83,7 @@ export default function Content() {
 
 	return (
 		<Center h={"100vh"} w={"100vw"}>
-			<Box id="boxLogin" w={"390px"} h={"844px"} maxHeight={"844px"}>
+			<Box id="boxLogin" w={"390px"} h={"844px"} maxH={"844px"}>
 				<Box h={"480px"} bg={"rgb(191,41,53)"} borderRadius={"30px"}>
 					<Center
 						paddingTop={"40px"}
@@ -140,7 +136,9 @@ export default function Content() {
 										bg={"#035ebf"}
 										borderRadius={"10px"}
 										color={"white"}
-										onClick={addClockIn}
+										onClick={
+											clock.clock_in ? addClockIn : null
+										}
 										cursor={"pointer"}
 									>
 										Clock In
@@ -153,7 +151,9 @@ export default function Content() {
 										bg={"#035ebf"}
 										borderRadius={"10px"}
 										color={"white"}
-										onClick={addClockOut}
+										onClick={
+											clock.clock_out ? addClockOut : null
+										}
 										cursor={"pointer"}
 									>
 										Clock Out
