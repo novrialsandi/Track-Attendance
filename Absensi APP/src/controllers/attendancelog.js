@@ -26,6 +26,42 @@ const attlogController = {
       });
     }
   },
+  getFilter: async (req, res) => {
+    try {
+      const { user_id, time } = req.query;
+      const attLog = await db.Attendancelog.findAll({
+        where: {
+          [Op.and]: [
+            {
+              user_id: user_id,
+            },
+            {
+              [Op.and]: [
+                {
+                  createdAt: {
+                    [Op.gt]: moment(time).format(),
+                  },
+                },
+                {
+                  createdAt: {
+                    [Op.lt]: moment(time).add(1, "M").format(),
+                  },
+                },
+              ],
+            },
+            {
+              deletedAt: null,
+            },
+          ],
+        },
+      });
+      res.send(attLog);
+    } catch (err) {
+      res.status(500).send({
+        message: err.message,
+      });
+    }
+  },
   getToday: async (req, res) => {
     try {
       const { user_id } = req.query;
