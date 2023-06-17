@@ -53,10 +53,7 @@ const userController = {
 			});
 			console.log(user);
 			if (user) {
-				const match = await bcrypt.compare(
-					password,
-					user.dataValues.password
-				);
+				const match = await bcrypt.compare(password, user.dataValues.password);
 				console.log(match);
 				if (match) {
 					const payload = {
@@ -104,10 +101,7 @@ const userController = {
 				},
 			});
 			if (user) {
-				const match = await bcrypt.compare(
-					password,
-					user.dataValues.password
-				);
+				const match = await bcrypt.compare(password, user.dataValues.password);
 				console.log(match);
 				if (match) {
 					const payload = {
@@ -162,10 +156,7 @@ const userController = {
 						},
 						{
 							expired: {
-								[Op.gt]: moment(
-									"00:00:00",
-									"hh:mm:ss"
-								).format(),
+								[Op.gt]: moment("00:00:00", "hh:mm:ss").format(),
 								[Op.lte]: moment().add(1, "d").format(),
 							},
 						},
