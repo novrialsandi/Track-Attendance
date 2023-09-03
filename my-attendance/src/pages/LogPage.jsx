@@ -113,17 +113,11 @@ export default function Log() {
 										{moment().format("ll").split(",")[0]}
 									</Flex>
 									<Flex w={"25%"} justifyContent={"center"}>
-										{val.clock_in
-											? moment(val.clock_in).format(
-													"HH:mm"
-											  )
-											: "-"}
+										{val.clock_in ? moment(val.clock_in).format("HH:mm") : "-"}
 									</Flex>
 									<Flex w={"25%"} justifyContent={"center"}>
 										{val.clock_out
-											? moment(val.clock_out).format(
-													"HH:mm"
-											  )
+											? moment(val.clock_out).format("HH:mm")
 											: "-"}
 									</Flex>
 								</Flex>
